@@ -1,16 +1,11 @@
-from locust import HttpUser, TaskSet, task, between, constant
-import os
+import time
+from locust import HttpUser, task
 
-class UserBehavior(TaskSet):
-    @task(1)
-    def login(self):
+class QuickstartUser(HttpUser):
+    @task
+    def simple_call(self):
+        res = self.client.get("?card_code=rush_test_101&status=&metadata=&button_log=", headers={'referer': 'rush_test_referer'})
+        time.sleep(1)
 
-        l = os.environ['LOCUST_PARAM'].split(';')
-        tmp = map(lambda s:s.split('='), l)
-        param = dict(tmp)
-
-        self.client.post(os.environ['LOCUST_TARGET_PATH'], param)
-
-class WebsiteUser(HttpUser):
-    tasks = {UserBehavior:1}
-    wait_time = constant(1)
+    # def on_start(self):
+    #     self.client.post("/login", json={"username":"foo", "password":"bar"})
