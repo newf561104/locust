@@ -7,7 +7,7 @@ class UserBehavior(TaskSet):
         with self.client.get("", headers={'referer': 'rush_test_referer'}, catch_response = True) as response:
             if response.status_code != 200:
                 response.failure("Failed.")
-            if json.loads(response.text)['result_code'] != '00101':
+            if json.loads(response.text)['result_code'] != '00101' and json.loads(response.text)['image'] == '616296_s.jpg':
                 response.failure("scenario does not load.")
 class WebsiteUser(HttpUser):
     tasks = {UserBehavior:1}
